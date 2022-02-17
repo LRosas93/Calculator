@@ -47,7 +47,3 @@ button_equal = ttk.Button(mainframe, text="=").grid(column=3, row=4)
 
 # loops through main window
 root.mainloop()
-
-print("Hello, World!")
-# TODO: using the place() method allows for configuration of Buttons (resizing)
-# # TODO: buttons should have a command function that displays on entry widget
