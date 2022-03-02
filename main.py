@@ -11,6 +11,7 @@ log = ""
 op = ""
 
 
+# log variable will log all buttons before the operator gets added
 def keylog(k):
     """log variable just holds button value as its being pressed, to prevent
        bug"""
@@ -27,6 +28,7 @@ def clear_entry():
     display.set(0)
 
 
+# op variable will hold the operator use for each calculation
 def add_op(o):
     """o is an operator to use for calculation"""
     global log, op
@@ -63,7 +65,7 @@ def get_result():
         log = ""
 
 
-# converts ep with display value to its negative
+# converts current value of log into its negative, except; restart display
 def get_neg():
     global log, op
     try:
