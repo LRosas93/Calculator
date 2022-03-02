@@ -8,19 +8,15 @@ root.title("Calculator")
 
 # keylog for buttons
 log = ""
-# holds expression to later be evaluated
-ep = ""
+op = ""
+
 
 def keylog(k):
     """log variable just holds button value as its being pressed, to prevent
        bug"""
-    operators = "*/+-"
     global log
-    for o in operators:
-        if o in log:
-            log = ""
     log += k
-    num.set(log)
+    display.set(log)
 
 
 # function for 'clear' button
@@ -28,30 +24,57 @@ def clear_entry():
     """sets widget value to 0: linked variable: 0"""
     global log
     log = ""
-    num.set(0)
+    display.set(0)
 
 
 def add_op(o):
     """o is an operator to use for calculation"""
-    global log, ep
-    log += o
-    ep = log
-    num.set(0)
+    global log, op
+    num1.set(log)
+    op = o
+    clear_entry()
+
 
 # performs calculations: status of function: beta function, no implementation
 def get_result():
-    """ep holds expression to evaluate"""
-    global log, ep
-    ep += log
-    result = eval(ep)
-    num.set(result)
-
-
-# converts ep with num value to its negative
-def get_neg():
+    """op holds operator"""
     global log
-    ep = -(int(log))
-    num.set(ep)
+    num2.set(log)
+    n1 = num1.get()
+    n2 = num2.get()
+    if op == "*":
+        result = n1 * n2
+        display.set(result)
+        log = ""
+    elif op == "/":
+        try:
+            result = n1 / n2
+            display.set(result)
+            log = ""
+        except ZeroDivisionError:
+            display.set("Error")
+    elif op == "+":
+        result = n1 + n2
+        display.set(result)
+        log = ""
+    elif op == "-":
+        result = n1 - n2
+        display.set(result)
+        log = ""
+
+
+# converts ep with display value to its negative
+def get_neg():
+    global log, op
+    log = -(int(log))
+    # if operator is pressed; negative will apply to num2; else num1
+    if op == "":
+        num1.set(log)
+        display.set(log)
+    elif len(op) > 0:
+        num2.set(log)
+        display.set(log)
+
 
 # mainframe widget acts as container for all widgets inside
 mainframe = ttk.Frame(root)
@@ -62,12 +85,14 @@ root.rowconfigure(0, weight=1)
 
 
 # Entry Widget that displays value of button pressed on calculator
-num = StringVar()
-e = ttk.Entry(mainframe, textvariable=num)
+display = StringVar()
+num1 = IntVar()
+num2 = IntVar()
+e = ttk.Entry(mainframe, textvariable=display)
 e.grid(column=0, row=0, columnspan=2, sticky=(N, W, E, S))
 
 
-# num buttons
+# display buttons
 button_1 = ttk.Button(mainframe, text="1", command=lambda : keylog("1")).grid(column=0, row=3, sticky=(N, W, E, S))
 button_2 = ttk.Button(mainframe, text="2", command=lambda : keylog("2")).grid(column=1, row=3)
 button_3 = ttk.Button(mainframe, text="3", command=lambda : keylog("3")).grid(column=2, row=3)
