@@ -66,14 +66,17 @@ def get_result():
 # converts ep with display value to its negative
 def get_neg():
     global log, op
-    log = -(int(log))
-    # if operator is pressed; negative will apply to num2; else num1
-    if op == "":
-        num1.set(log)
-        display.set(log)
-    elif len(op) > 0:
-        num2.set(log)
-        display.set(log)
+    try:
+        log = -(int(log))
+        # if operator is pressed; negative will apply to num2; else num1
+        if op == "":
+            num1.set(log)
+            display.set(log)
+        elif len(op) > 0:
+            num2.set(log)
+            display.set(log)
+    except ValueError:
+        display.set(0)
 
 
 # mainframe widget acts as container for all widgets inside
@@ -85,7 +88,7 @@ root.rowconfigure(0, weight=1)
 
 
 # Entry Widget that displays value of button pressed on calculator
-display = StringVar()
+display = StringVar(value=0)
 num1 = IntVar()
 num2 = IntVar()
 e = ttk.Entry(mainframe, textvariable=display)
